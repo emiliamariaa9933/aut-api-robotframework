@@ -7,6 +7,17 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
 
 jobs:
   regressive_tests:
@@ -31,6 +42,7 @@ jobs:
           python -m robot -d regressive_tests tests
 
       - name: Upload Artifacts
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: regressive_tests
